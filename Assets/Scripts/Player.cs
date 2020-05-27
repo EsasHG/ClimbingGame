@@ -3,14 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
     public float MovementSpeed = 0.1f;
     public float JumpStrength = 1.3f;
 
-    bool DoubleJumpUsed = false;
-    private bool IsInAir = true;
+    private bool DoubleJumpUsed = false;
     private Quaternion StartRot;
 
     private Rigidbody2D rigidBody;
@@ -19,7 +19,6 @@ public class Player : MonoBehaviour
     {
         StartRot = transform.rotation;
         rigidBody = GetComponent<Rigidbody2D>();
-
     }
 
     // Update is called once per frame
@@ -28,9 +27,11 @@ public class Player : MonoBehaviour
         transform.rotation = StartRot;
         rigidBody.velocity += new Vector2(1,0) * Input.GetAxisRaw("Horizontal") * MovementSpeed;
 
+        if(Input.GetKeyDown(KeyCode.R))
+            SceneManager.LoadScene("SampleScene");
+
         if (Math.Abs(rigidBody.velocity.y) < 0.5)
         {
-            DoubleJumpUsed = false;
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space))
             {
                 Jump();
@@ -44,6 +45,7 @@ public class Player : MonoBehaviour
                 Jump();
             }
         }
+        
     }
 
     private void Jump()
@@ -53,13 +55,11 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!collision.collider.isTrigger)
-            IsInAir = false;
+        DoubleJumpUsed = false;
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (!collision.collider.isTrigger)
-            IsInAir = true;
+
     }
 }
 
