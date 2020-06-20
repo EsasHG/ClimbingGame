@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         transform.rotation = StartRot;
-        rigidBody.velocity += new Vector2(1,0) * Input.GetAxisRaw("Horizontal") * MovementSpeed;
+        transform.position += new Vector3(1,0,0) * Input.GetAxisRaw("Horizontal") * MovementSpeed * Time.deltaTime;
 
         if(Input.GetKeyDown(KeyCode.R))
             SceneManager.LoadScene("SampleScene");
